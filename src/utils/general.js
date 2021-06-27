@@ -33,7 +33,7 @@ export const ccType = {
     const now = new Date();
     if (!year || (year && year > now.getFullYear())) {
       // if no year entered or future year, allow all 12 months
-      return value.match(/^(0?[1-9]|1[012])$/i);
+      return !!value.match(/^(0?[1-9]|1[012])$/i);
     } else if (year && year === now.getFullYear()) {
       // current year, so allow only current month or later
       return value.match(/^(0?[1-9]|1[012])$/i) && value >= now.getMonth() + 1;

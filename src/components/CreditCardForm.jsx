@@ -33,8 +33,8 @@ const StyledFields = styled.div`
     text-align: center;
     border-radius: 0.5em;
     border: 2px #d3d3d3 solid;
-    color: #d3d3d3;
     font-size: 16px;
+    color: #444444;
   }
 
   .monthField {
@@ -50,6 +50,10 @@ const StyledFields = styled.div`
     border-radius: 0.5em;
     border: 2px grey solid;
   }
+
+  button:disabled {
+    background-color: #E9D3FF;
+  }
 `;
 
 class CreditCardForm extends Component {
@@ -57,11 +61,11 @@ class CreditCardForm extends Component {
     super(props);
 
     const errorFields = {
-      name: "",
-      cardNumber: "",
-      cvv: "",
-      month: "",
-      year: "",
+      name: false,
+      cardNumber: false,
+      cvv: false,
+      month: false,
+      year: false,
     };
 
     this.state = {
@@ -103,25 +107,25 @@ class CreditCardForm extends Component {
 
     switch (fieldName) {
       case "name":
-        nameValid = value.match(/^([a-z]+[,.]?[ ]?|[a-z]+['-]?)+$/i);
-        fieldValidationErrors.name = nameValid ? "" : " is invalid";
+        nameValid = !!value.match(/^([a-z]+[,.]?[ ]?|[a-z]+['-]?)+$/i);
+        fieldValidationErrors.name = !nameValid;
         break;
       case "cardNumber":
         cardType = detectCardType(value);
-        fieldValidationErrors.cardNumber =
-          cardType !== ccType.invalid ? "" : " is invalid";
+        cardNumberValid = cardType !== ccType.invalid;
+        fieldValidationErrors.cardNumber = !cardNumberValid;
         break;
       case "cvv":
         cvvValid = validateCVV(value, cardType);
-        fieldValidationErrors.cvv = cvvValid ? "" : " is invalid";
+        fieldValidationErrors.cvv = !cvvValid;
         break;
       case "month":
         monthValid = validateMonth(value, year);
-        fieldValidationErrors.month = monthValid ? "" : " is invalid";
+        fieldValidationErrors.month = !monthValid;
         break;
       case "year":
         yearValid = validateYear(value);
-        fieldValidationErrors.year = yearValid ? "" : " is invalid";
+        fieldValidationErrors.year = !yearValid;
         break;
       default:
         break;

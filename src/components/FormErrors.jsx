@@ -8,9 +8,9 @@ const StyledFormErrors = styled.div`
 export const FormErrors = ({formErrors}) =>
   <StyledFormErrors>
     {Object.keys(formErrors).map((fieldName, i) => {
-      if(formErrors[fieldName].length > 0){
+      if(formErrors[fieldName]){
         return (
-          <p key={i}>{getDisplayPropName(fieldName)} {formErrors[fieldName]}</p>
+          <p key={i}>{`${getDisplayPropName(fieldName)} is invalid`}</p>
         )        
       } else {
         return '';
