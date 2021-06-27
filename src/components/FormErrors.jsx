@@ -5,7 +5,7 @@ import { getDisplayPropName } from "../utils/general";
 const StyledFormErrors = styled.div`
   color: red;
 `;
-export const FormErrors = ({formErrors}) =>
+const FormErrors = ({formErrors}) =>
   <StyledFormErrors>
     {Object.keys(formErrors).map((fieldName, i) => {
       if(formErrors[fieldName]){
@@ -17,3 +17,5 @@ export const FormErrors = ({formErrors}) =>
       }
     })}
   </StyledFormErrors>
+
+export default FormErrors;

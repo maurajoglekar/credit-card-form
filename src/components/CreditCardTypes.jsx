@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { ccType, cclogoUrl } from "../utils/general";
 
@@ -47,10 +47,10 @@ const CreditCardTypes = ({cardType }) => {
 
   return (
     <StyledCreditCardTypes>
-      <StyledVisa isType={cardType === ccType.visa}/>
-      <StyledMasterCard isType={cardType === ccType.mastercard}/>
-      <StyledAMEX isType={cardType === ccType.amex}/>
-      <StyledDiscover isType={cardType === ccType.discover}/>
+      <StyledVisa data-test-id="visa-card" isType={cardType === ccType.visa}/>
+      <StyledMasterCard data-test-id="mastercard-card" isType={cardType === ccType.mastercard}/>
+      <StyledAMEX data-test-id="amex-card" isType={cardType === ccType.amex}/>
+      <StyledDiscover data-test-id="discover-card" isType={cardType === ccType.discover}/>
     </StyledCreditCardTypes>
   );
 };

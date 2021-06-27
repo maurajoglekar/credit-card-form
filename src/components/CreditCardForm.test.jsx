@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import CreditCardForm from './CreditCardForm';
 
@@ -39,8 +39,6 @@ describe('Credit Card form component', () => {
               .find('[data-test-id="submit-button"]').props().disabled
           ).toBe(true)
 
-          const nameError = wrapper.find('[data-test-id="name-error"]');
-          console.log(nameError);
         wrapper.unmount();
     });
 });

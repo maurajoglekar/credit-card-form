@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormErrors } from "./FormErrors";
+import FormErrors from "./FormErrors";
 import styled from "styled-components";
 import CreditCardTypes from "./CreditCardTypes";
 import {
@@ -8,7 +8,7 @@ import {
   detectCardType,
   validateCVV,
   validateYear,
-  validateMonth
+  validateMonth,
 } from "../utils/general";
 
 const StyledCreditCardForm = styled.form`
@@ -53,7 +53,7 @@ const StyledFields = styled.div`
   }
 
   button:disabled {
-    background-color: #E9D3FF;
+    background-color: #e9d3ff;
   }
 `;
 
@@ -104,7 +104,7 @@ class CreditCardForm extends Component {
       yearValid,
       cardType,
       year,
-      month
+      month,
     } = this.state;
 
     switch (fieldName) {
@@ -222,7 +222,11 @@ class CreditCardForm extends Component {
           </div>
           <CreditCardTypes cardType={cardType}></CreditCardTypes>
 
-          <button type="submit" disabled={!this.state.formValid} data-test-id="submit-button">
+          <button
+            type="submit"
+            disabled={!this.state.formValid}
+            data-test-id="submit-button"
+          >
             Submit
           </button>
         </StyledFields>
