@@ -10,7 +10,7 @@ export const FormErrors = ({formErrors}) =>
     {Object.keys(formErrors).map((fieldName, i) => {
       if(formErrors[fieldName]){
         return (
-          <p key={i}>{`${getDisplayPropName(fieldName)} is invalid`}</p>
+          <p key={i} data-test-id={`${fieldName}-error`}>{`${getDisplayPropName(fieldName)} is invalid`}</p>
         )        
       } else {
         return '';

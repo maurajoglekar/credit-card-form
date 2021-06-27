@@ -102,7 +102,8 @@ class CreditCardForm extends Component {
       monthValid,
       yearValid,
       cardType,
-      year
+      year,
+      month
     } = this.state;
 
     switch (fieldName) {
@@ -124,8 +125,12 @@ class CreditCardForm extends Component {
         fieldValidationErrors.month = !monthValid;
         break;
       case "year":
-        yearValid = validateYear(value);
+        yearValid = !!validateYear(value);
         fieldValidationErrors.year = !yearValid;
+        if (yearValid) {
+          monthValid = validateMonth(month, year);
+          fieldValidationErrors.month = !monthValid;
+        }
         break;
       default:
         break;
@@ -173,6 +178,7 @@ class CreditCardForm extends Component {
             placeholder="Name"
             value={name}
             onChange={this.handleUserInput}
+            data-test-id="name-input"
           />
 
           <input
@@ -181,6 +187,7 @@ class CreditCardForm extends Component {
             placeholder="Card Number"
             value={cardNumber}
             onChange={this.handleUserInput}
+            data-test-id="card-number-input"
           />
 
           <input
@@ -189,6 +196,7 @@ class CreditCardForm extends Component {
             placeholder="CVV2"
             value={cvv}
             onChange={this.handleUserInput}
+            data-test-id="cvv-input"
           />
 
           <div>
@@ -199,6 +207,7 @@ class CreditCardForm extends Component {
               placeholder="Exp. Month"
               value={month}
               onChange={this.handleUserInput}
+              data-test-id="month-input"
             />
 
             <input
@@ -207,11 +216,12 @@ class CreditCardForm extends Component {
               placeholder="Exp. Year"
               value={year}
               onChange={this.handleUserInput}
+              data-test-id="year-input"
             />
           </div>
           <CreditCardTypes cardType={cardType}></CreditCardTypes>
 
-          <button type="submit" disabled={!this.state.formValid}>
+          <button type="submit" disabled={!this.state.formValid} data-test-id="submit-button">
             Submit
           </button>
         </StyledFields>

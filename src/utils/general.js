@@ -31,12 +31,14 @@ export const ccType = {
 
   export const validateMonth = (value, year) => {
     const now = new Date();
-    if (!year || (year && year > now.getFullYear())) {
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+    if (!year || (year && parseInt(year) > currentYear)) {
       // if no year entered or future year, allow all 12 months
       return !!value.match(/^(0?[1-9]|1[012])$/i);
-    } else if (year && year === now.getFullYear()) {
+    } else if (value && year && parseInt(year) === currentYear) {
       // current year, so allow only current month or later
-      return value.match(/^(0?[1-9]|1[012])$/i) && value >= now.getMonth() + 1;
+      return value.match(/^(0?[1-9]|1[012])$/i) && (value >= currentMonth);
     }
   };
 
