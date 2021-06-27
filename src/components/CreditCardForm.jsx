@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { FormErrors } from "./FormErrors";
 import styled from "styled-components";
+import CreditCardTypes from "./CreditCardTypes";
+import { ccType, detectCardType, validateCVV} from "../utils/general";
 
 const StyledCreditCardForm = styled.form`
   display: flex;
@@ -10,8 +12,8 @@ const StyledCreditCardForm = styled.form`
 
   max-width: 500px;
   margin: 30px;
-  border-radius: .5em;
-  border: 2px #D3D3D3 solid;
+  border-radius: 0.5em;
+  border: 2px #d3d3d3 solid;
 `;
 
 const StyledFields = styled.div`
@@ -23,9 +25,9 @@ const StyledFields = styled.div`
     height: 40px;
     padding: 10px;
     text-align: center;
-    border-radius: .5em;
-    border: 2px #D3D3D3 solid;
-    color: #D3D3D3;
+    border-radius: 0.5em;
+    border: 2px #d3d3d3 solid;
+    color: #d3d3d3;
     font-size: 16px;
   }
 
@@ -36,14 +38,13 @@ const StyledFields = styled.div`
   button {
     height: 60px;
     margin-bottom: 3em;
-    color: #FFF;
+    color: #fff;
     font-size: 16px;
-    background-color: #9370DB;
-    border-radius: .5em;
-    border: 2px #D3D3D3 solid;
+    background-color: #9370db;
+    border-radius: 0.5em;
+    border: 2px grey solid;
   }
 `;
-
 
 class CreditCardForm extends Component {
   constructor(props) {
@@ -70,6 +71,7 @@ class CreditCardForm extends Component {
       monthValid: false,
       yearValid: false,
       formValid: false,
+      cardType: null,
     };
   }
 
@@ -88,30 +90,31 @@ class CreditCardForm extends Component {
       nameValid,
       cardNumberValid,
       monthValid,
-      yearValid
+      yearValid,
+      cardType,
     } = this.state;
+
+    const now = new Date();
 
     switch (fieldName) {
       case "name":
-        nameValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        nameValid = value.match(/^([a-z]+[,.]?[ ]?|[a-z]+['-]?)+$/i);
         fieldValidationErrors.name = nameValid ? "" : " is invalid";
         break;
       case "cardNumber":
-        cardNumberValid = value.length >= 6;
-        fieldValidationErrors.cardNumber = cardNumberValid
-          ? ""
-          : " is too short";
+        cardType = detectCardType(value);
+        fieldValidationErrors.cardNumber = cardType !== ccType.invalid ? "" : " is invalid";
         break;
       case "cvv":
-        cvvValid = value.length >= 3;
+        cvvValid =  validateCVV(value, cardType);
         fieldValidationErrors.cvv = cvvValid ? "" : " is invalid";
         break;
       case "month":
-        monthValid = value.length >= 3;
+        monthValid = value.match(/^(0?[1-9]|1[012])$/i) && value > now.getMonth() + 1;
         fieldValidationErrors.month = monthValid ? "" : " is invalid";
         break;
       case "year":
-        yearValid = value.length >= 3;
+        yearValid = value.match(/^\d{4}$/i) && value >= now.getFullYear();
         fieldValidationErrors.year = yearValid ? "" : " is invalid";
         break;
       default:
@@ -124,7 +127,8 @@ class CreditCardForm extends Component {
         cardNumberValid: cardNumberValid,
         cvvValid: cvvValid,
         monthValid: monthValid,
-        yearValid: yearValid
+        yearValid: yearValid,
+        cardType: cardType
       },
       this.validateForm
     );
@@ -137,7 +141,7 @@ class CreditCardForm extends Component {
         this.state.cardNumberValid &&
         this.state.cvvValid &&
         this.state.monthValid &&
-        this.state.yearValid
+        this.state.yearValid,
     });
   }
 
@@ -196,12 +200,11 @@ class CreditCardForm extends Component {
               onChange={this.handleUserInput}
             />
           </div>
+          <CreditCardTypes></CreditCardTypes>
 
-
-        <button type="submit" disabled={!this.state.formValid}>
-          Submit
-        </button>
-
+          <button type="submit" disabled={!this.state.formValid}>
+            Submit
+          </button>
         </StyledFields>
       </StyledCreditCardForm>
     );
