@@ -5,31 +5,6 @@ import CreditCardForm from './CreditCardForm';
 
 describe('Credit Card form component', () => {
 
-    xit('renders correctly', () => {
-        const wrapper = mount(<CreditCardForm/>);
-
-        const nameInput = wrapper.find('[data-test-id="name-input"]');
-        const nameError = wrapper.find('[data-test-id="name-error"]');
-
-        expect(
-            wrapper
-              .find('[data-test-id="name-input"]').props().value
-          ).toBe('');
-
-        nameInput.simulate('focus');
-        nameInput.simulate('change', {target: { value: 'Mau2' }});
-        nameInput.simulate('keyDown', {
-            which: 27,
-            target: {
-              blur() {
-                input.simulate('blur');
-              },
-            },
-          });
- 
-        wrapper.unmount();
-    });
-
     it('renders empty form with all the fields', () => {
         const wrapper = mount(<CreditCardForm/>);
 

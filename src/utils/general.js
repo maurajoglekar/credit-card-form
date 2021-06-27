@@ -8,6 +8,10 @@ export const ccType = {
 
   export const cclogoUrl = 'https://apisandboxstatic.zuora.com/Resources/5222233/Images/card-logos-3.png';
 
+  export const validateName = (value) => {
+    return !!value.match(/^([a-z]+[,.]?[ ]?|[a-z]+['-]?)+$/i);
+  };
+
   export const detectCardType = (value) => {
     if (value) {
       if (/^4[0-9]{12}(?:[0-9]{3})?$/.test(value)) 

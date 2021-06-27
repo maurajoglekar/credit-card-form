@@ -4,6 +4,7 @@ import styled from "styled-components";
 import CreditCardTypes from "./CreditCardTypes";
 import {
   ccType,
+  validateName,
   detectCardType,
   validateCVV,
   validateYear,
@@ -108,7 +109,7 @@ class CreditCardForm extends Component {
 
     switch (fieldName) {
       case "name":
-        nameValid = !!value.match(/^([a-z]+[,.]?[ ]?|[a-z]+['-]?)+$/i);
+        nameValid = validateName(value);
         fieldValidationErrors.name = !nameValid;
         break;
       case "cardNumber":
