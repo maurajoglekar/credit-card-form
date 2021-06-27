@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-const cclogoUrl = 'https://apisandboxstatic.zuora.com/Resources/5222233/Images/card-logos-3.png';
+import { ccType, cclogoUrl } from "../utils/general";
+
 const StyledCreditCardTypes = styled.div`
   display: flex;
   justify-content: center;
@@ -10,50 +11,46 @@ const StyledCreditCardTypes = styled.div`
   margin-bottom: 1em;
 `;
 
-//-902px
 const StyledVisa = styled.div`
   background-image: url(${cclogoUrl});
-  background-position: 0 -820px;
+  background-position: ${props => (props.isType ? '0 -820px' : '0 -902px')};
   width: 60px;
   height: 32px;
   margin: 2px;
 `;
 
-//-738px
 const StyledMasterCard = styled.div`
   background-image: url(${cclogoUrl});
-  background-position: 0 -656px;
+  background-position: ${props => (props.isType ? '0 -656px' : '0 -738px')};
   width: 52px;
   height: 32px;
   margin: 2px;
 `;
 
-// -82px
 const StyledAMEX = styled.div`
   background-image: url(${cclogoUrl});
-  background-position: 0 0;
+  background-position: ${props => (props.isType ? '0 0' : '0 -82px')};
   width: 51px;
   height: 32px;
   margin: 2px;
 `;
 
-//-410px
 const StyledDiscover = styled.div`
   background-image: url(${cclogoUrl});
-  background-position: 0 -328px;
+  background-position: ${props => (props.isType ? '0 -328px' : '0 -410px')};
   width: 51px;
   height: 32px;
   margin: 2px;
 `;
 
-const CreditCardTypes = ({ }) => {
+const CreditCardTypes = ({cardType }) => {
 
   return (
     <StyledCreditCardTypes>
-      <StyledVisa />
-      <StyledMasterCard />
-      <StyledAMEX />
-      <StyledDiscover />
+      <StyledVisa isType={cardType === ccType.visa}/>
+      <StyledMasterCard isType={cardType === ccType.mastercard}/>
+      <StyledAMEX isType={cardType === ccType.amex}/>
+      <StyledDiscover isType={cardType === ccType.discover}/>
     </StyledCreditCardTypes>
   );
 };

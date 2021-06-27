@@ -2,7 +2,13 @@ import React, { Component } from "react";
 import { FormErrors } from "./FormErrors";
 import styled from "styled-components";
 import CreditCardTypes from "./CreditCardTypes";
-import { ccType, detectCardType, validateCVV} from "../utils/general";
+import {
+  ccType,
+  detectCardType,
+  validateCVV,
+  validateYear,
+  validateMonth
+} from "../utils/general";
 
 const StyledCreditCardForm = styled.form`
   display: flex;
@@ -92,9 +98,8 @@ class CreditCardForm extends Component {
       monthValid,
       yearValid,
       cardType,
+      year
     } = this.state;
-
-    const now = new Date();
 
     switch (fieldName) {
       case "name":
@@ -103,18 +108,19 @@ class CreditCardForm extends Component {
         break;
       case "cardNumber":
         cardType = detectCardType(value);
-        fieldValidationErrors.cardNumber = cardType !== ccType.invalid ? "" : " is invalid";
+        fieldValidationErrors.cardNumber =
+          cardType !== ccType.invalid ? "" : " is invalid";
         break;
       case "cvv":
-        cvvValid =  validateCVV(value, cardType);
+        cvvValid = validateCVV(value, cardType);
         fieldValidationErrors.cvv = cvvValid ? "" : " is invalid";
         break;
       case "month":
-        monthValid = value.match(/^(0?[1-9]|1[012])$/i) && value > now.getMonth() + 1;
+        monthValid = validateMonth(value, year);
         fieldValidationErrors.month = monthValid ? "" : " is invalid";
         break;
       case "year":
-        yearValid = value.match(/^\d{4}$/i) && value >= now.getFullYear();
+        yearValid = validateYear(value);
         fieldValidationErrors.year = yearValid ? "" : " is invalid";
         break;
       default:
@@ -128,7 +134,7 @@ class CreditCardForm extends Component {
         cvvValid: cvvValid,
         monthValid: monthValid,
         yearValid: yearValid,
-        cardType: cardType
+        cardType: cardType,
       },
       this.validateForm
     );
@@ -145,16 +151,15 @@ class CreditCardForm extends Component {
     });
   }
 
-  errorClass(error) {
-    return error.length === 0 ? "" : "has-error";
-  }
-
   render() {
+    const { formErrors, name, cardNumber, cvv, month, year, cardType } =
+      this.state;
+
     return (
       <StyledCreditCardForm>
         <h2>Enter your credit card information</h2>
         <div>
-          <FormErrors formErrors={this.state.formErrors} />
+          <FormErrors formErrors={formErrors} />
         </div>
         <StyledFields>
           <input
@@ -162,7 +167,7 @@ class CreditCardForm extends Component {
             required
             name="name"
             placeholder="Name"
-            value={this.state.name}
+            value={name}
             onChange={this.handleUserInput}
           />
 
@@ -170,7 +175,7 @@ class CreditCardForm extends Component {
             type="text"
             name="cardNumber"
             placeholder="Card Number"
-            value={this.state.cardNumber}
+            value={cardNumber}
             onChange={this.handleUserInput}
           />
 
@@ -178,7 +183,7 @@ class CreditCardForm extends Component {
             type="text"
             name="cvv"
             placeholder="CVV2"
-            value={this.state.cvv}
+            value={cvv}
             onChange={this.handleUserInput}
           />
 
@@ -188,7 +193,7 @@ class CreditCardForm extends Component {
               type="text"
               name="month"
               placeholder="Exp. Month"
-              value={this.state.month}
+              value={month}
               onChange={this.handleUserInput}
             />
 
@@ -196,11 +201,11 @@ class CreditCardForm extends Component {
               type="text"
               name="year"
               placeholder="Exp. Year"
-              value={this.state.year}
+              value={year}
               onChange={this.handleUserInput}
             />
           </div>
-          <CreditCardTypes></CreditCardTypes>
+          <CreditCardTypes cardType={cardType}></CreditCardTypes>
 
           <button type="submit" disabled={!this.state.formValid}>
             Submit
